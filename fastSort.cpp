@@ -22,30 +22,26 @@ public:
     {
         if (end-1 > begin)
         {
-            //iter mid = begin;
             iter mid = partition(begin, end, func);
-            //std::cout << "mid : "<< *mid << std::endl;
-            display(begin, end);
             sort(begin, mid, func);
             sort(mid+1, end, func);
         }
     }
 };
-using namespace std;
+// using namespace std;
 // bool comp(iter a, iter b)
 // {
-//     if ((*a)[0] < (*b)[0])
+//     if ((*a)[0] <= (*b)[0])
 //     {
 //         return true;
 //     }
 //     return false;
 // }
-int main(int argc, char const *argv[]) {
-    FastSort s;
-    //vector<string> vec{"ac", "cx","bb","ss","ds","jb"};
-    vector<int> vec{1,2,2,2,0,7,1,2,3,10,5,12,3};
-
-    s.sort(vec.begin(), vec.end());
-    display(vec.begin(), vec.end());
-    return 0;
-}
+// int main(int argc, char const *argv[]) {
+//     FastSort s;
+//     vector<string> vec{"ac", "cx","bb","ss","ds","jb"};
+//     //vector<int> vec{1,6,3,5};
+//     s.sort(vec.begin(), vec.end(), comp);
+//     display(vec.begin(), vec.end());
+//     return 0;
+// }
