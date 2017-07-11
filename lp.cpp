@@ -2,9 +2,9 @@
 #include <iostream>
 #include <cfloat>
 using namespace std;
-
+//用于线性规划的程序，使用单纯形法
 using vv = vector<vector<double> >;
-void display(vv &v)
+void display2d(vv &v)//显示单纯形表
 {
     for(size_t i = 0; i < v.size(); i++)
     {
@@ -14,6 +14,14 @@ void display(vv &v)
         }
         cout << endl;
     }
+}
+void display1d(vector<double> &v)//显示结果
+{
+    for(size_t i = 0; i < v.size(); i++)
+    {
+        cout << v[i] << " ";
+    }
+    cout << endl;
 }
 vv create(int m, int n)//生成单纯形表
 {
@@ -31,7 +39,7 @@ vv create(int m, int n)//生成单纯形表
     }
     return v;
 }
-vector<double> createValues(int n)
+vector<double> createValues(int n)//创建价值系数
 {
     vector<double> values;
     for(size_t i = 0; i < n; i++)
@@ -100,7 +108,21 @@ int calTheta(vv &v, vector<int> &base, int maxCheckNumIndex)
         }
     }
     return minIndex;
-
+}
+void calNewBase(vv &v, int maxCheckNumIndex, int maxTheta)
+{
+    for (size_t i = 0; i < v[0].size(); i++)
+    {
+        v[maxTheta][i] /= v[maxTheta][maxCheckNumIndex];
+    }
+    for (size_t i = 0; i < v.size(); i++)
+    {
+        if (i == maxTheta) continue;
+        for (size_t j = 0; j < v[0].size(); j++)
+        {
+            v[i][j] -= v[maxTheta][i]*v[i][maxCheckNumIndex];
+        }
+    }
 }
 vector<double> calculate(vv &v, vector<double> &values, vector<int> &base)
 {
@@ -123,18 +145,28 @@ vector<double> calculate(vv &v, vector<double> &values, vector<int> &base)
                 maxCheckNumIndex = i;
             }
         }
+        int maxTheta = calTheta(v, base, maxCheckNumIndex);
+        base[maxTheta] = maxCheckNumIndex;
+        calNewBase(v, maxCheckNumIndex, maxTheta);
     }
 }
 
 int main()
 {
-    int m = 0, n = 0;
-    cout << "输入m，n\n";
-    cin >> m >> n;
-    cout << "输入初始矩阵:\n";
-    
-    vv v = create(m, n);
-      cout << "输入价值系数:\n";
-    vector<int> values = createValues(n);
-    display(v);
-} 
+    // int m = 0, n = 0;
+    // cout << "输入m，n\n";
+    // cin >> m >> n;
+    // cout << "输入初始矩阵:\n";
+    //
+    // vv v = create(m, n);
+    //   cout << "输入价值系数:\n";
+    //vector<double> values = createValues(n);
+    vector<double> values{2,1,0,0,0};
+    vector<vector<double> >v{
+                            {0,5,1,0,0,15},
+                            {6,2,0,1,0,24},
+                            {1,1,0,0,1,5}};
+    vector<int> base{2,3,4};
+    vector<double> result = calculate(v, values, base);
+    display1d(result);
+}
