@@ -53,18 +53,20 @@ vector<double> createValues(int n)//创建价值系数
 vector<double> calCheckNum(vv &v, vector<double> &values, vector<int> &base)
 {
     vector<double> checkNum;
+    //cout << "v size:" <<v[0].size() << endl;
     for(size_t i = 0; i < v[0].size()-1; i++)
     {
          double temp = 0;
-         for (size_t j = 0; j < v.size(); j++)//计算zj
+         for (size_t j = 0; j < base.size(); j++)//计算zj
          {
-            temp+=v[i][j] * values[base[j]];
+            temp+=v[j][i] * values[base[j]];
          }
          checkNum.push_back(values[i] - temp);
     }
+    //cout << "end calCheckNum" << endl;
     return checkNum;
 }
-bool isAnswer(vector<double> &checkNum)
+bool isAnswer(vector<double> &checkNum)//通过检验数来判断是否是最优解
 {
     for(size_t i = 0; i < checkNum.size(); i++)
     {
@@ -98,12 +100,16 @@ int calTheta(vv &v, vector<int> &base, int maxCheckNumIndex)
     vector<double> theta;
     int minIndex = 0;
     double min = FLT_MAX;
+    int minI = 0;
     for(size_t i = 0; i < base.size(); i++)
     {
         double temp = v[i][v[0].size()-1]/v[i][maxCheckNumIndex];
+        //cout<<"temp: "<<temp <<" index:" << base[i]<<endl;
         if (temp < min)
         {
-            minIndex = base[i];
+            //minIndex = base[i];
+            //minI = i;
+            minIndex = i;
             min = temp;
         }
     }
@@ -111,26 +117,40 @@ int calTheta(vv &v, vector<int> &base, int maxCheckNumIndex)
 }
 void calNewBase(vv &v, int maxCheckNumIndex, int maxTheta)
 {
+    //cout << "maxTheta: "<< maxTheta << " maxCheckNum:" << maxCheckNumIndex
+//<<endl;
+    double divid = v[maxTheta][maxCheckNumIndex];//主元素的值要保存起来
     for (size_t i = 0; i < v[0].size(); i++)
     {
-        v[maxTheta][i] /= v[maxTheta][maxCheckNumIndex];
+        v[maxTheta][i] /= divid;
     }
+    //display2d(v);
+    //cout << "mid calNewBase" << endl;
     for (size_t i = 0; i < v.size(); i++)
     {
         if (i == maxTheta) continue;
+        double divie = v[i][maxCheckNumIndex];//其他行的主元素那一列的元素也需要保存起来
+        //cout << "divie :" << divie<<endl;
         for (size_t j = 0; j < v[0].size(); j++)
         {
-            v[i][j] -= v[maxTheta][i]*v[i][maxCheckNumIndex];
+            v[i][j] -= v[maxTheta][j]*divie;
         }
     }
+    //display2d(v);
 }
 vector<double> calculate(vv &v, vector<double> &values, vector<int> &base)
 {
     int m = v.size();
     int n = v[0].size();
+    int i = 0;
     while (true)
     {
+        //display2d(v);
+        cout << i++ << endl;
         vector<double> checkNum = calCheckNum(v, values, base);//检验数
+        //cout << "checknumm--------------------------"<<endl;
+        //display1d(checkNum);
+        //std::cout << "after calCheckNum" << '\n';
         if (isAnswer(checkNum))
         {
             return createAnswer(v, base);
@@ -145,9 +165,13 @@ vector<double> calculate(vv &v, vector<double> &values, vector<int> &base)
                 maxCheckNumIndex = i;
             }
         }
-        int maxTheta = calTheta(v, base, maxCheckNumIndex);
-        base[maxTheta] = maxCheckNumIndex;
-        calNewBase(v, maxCheckNumIndex, maxTheta);
+        //pair<int,int> maxThetaAndIndex = calTheta(v, base, maxCheckNumIndex);
+        int index = calTheta(v, base, maxCheckNumIndex);
+        //std::cout << "after calTheta" << '\n';
+        base[index] = maxCheckNumIndex;
+        calNewBase(v, maxCheckNumIndex, index);
+        //std::cout << "after calNewBase" << '\n';
+        display2d(v);
     }
 }
 
@@ -161,12 +185,17 @@ int main()
     // vv v = create(m, n);
     //   cout << "输入价值系数:\n";
     //vector<double> values = createValues(n);
-    vector<double> values{2,1,0,0,0};
+    vector<double> values{0.75,0.7753,-0.375,-0.4474,-0.35,1.15,1.3611,
+    -0.5,0.68437,0,0,0,0,0,0};
     vector<vector<double> >v{
-                            {0,5,1,0,0,15},
-                            {6,2,0,1,0,24},
-                            {1,1,0,0,1,5}};
-    vector<int> base{2,3,4};
+        {5,0,0,0,0,10,0,0,0,1,0,0,0,0,0,6000},
+        {0,7,0,0,0,0,9,0,12,0,1,0,0,0,0,10000},
+        {0,0,6,0,0,0,0,8,0,0,0,1,0,0,0,4000},
+        {0,0,4,0,0,0,0,0,0,11,0,0,1,0,0,7000},
+        {1,1,-1,-1,-1,0,0,0,0,0,0,0,0,1,0,0},
+        {0,0,0,0,0,1,1,-1,0,0,0,0,0,0,1,0}
+                            };
+    vector<int> base{9,10,11,12,13,14};
     vector<double> result = calculate(v, values, base);
     display1d(result);
 }
