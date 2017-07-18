@@ -1,7 +1,7 @@
 #ifndef _INC_H
 #define _INC_H
 #include <iostream>
-//#include <algorithm>
+#include <algorithm>
 #include <vector>
 //#include <map>
 //#include <stack>
