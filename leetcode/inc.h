@@ -14,4 +14,16 @@ void displayVec(std::vector<int> v)
     }
     cout << endl;
 }
+template <typename T>
+void displayVec2d(std::vector<std::vector<T> > v)
+{
+    for (int i = 0; i < v.size(); i++)
+    {
+        for (int j = 0; j < v[0].size(); j++)
+        {
+            cout << v[i][j] << " ";
+        }
+        cout << endl;
+    }
+}
 #endif
