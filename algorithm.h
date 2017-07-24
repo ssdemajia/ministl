@@ -3,7 +3,7 @@
 #include <iostream>
 #include <vector>
 #include <string>
-
+#include <queue>
 //using iter = std::vector<int>::iterator;
 using iter = std::vector<std::string>::iterator;//描述算法所对应的数据类型
 
