@@ -19,21 +19,21 @@ public:
     Node<T> *createTree(int i, vector<T> &v);
     void printTree();
 private:
-    int size;
+    int size;//保存二叉树节点数
     Node<T> *tree;
 
 };
 
 template <typename T>
-Node<T> *Tree<T>::createTree(int i, vector<T> &v)
+Node<T> *Tree<T>::createTree(int i, vector<T> &v)//使用层序排序的方法构造树
 {
-    Node<T> * root = new Node<T>(v[i]);
+    Node<T> * root = new Node<T>(v[0]);
     queue<Node<T>* > q;
     q.push(root);
     i++;
     while(i <= v.size()/2)
     {
-        cout << "i:"<<i<<endl;
+        //cout << "i:"<<i<<endl;
         Node<T>* temp = q.front();
         q.pop();
 
@@ -53,7 +53,7 @@ Node<T> *Tree<T>::createTree(int i, vector<T> &v)
     return root;
 }
 template <typename T>
-void Tree<T>::printTree()
+void Tree<T>::printTree()//将树打印出来
 {
     Node<T> *ptr = this->tree;
     queue<Node<T>* > q;
