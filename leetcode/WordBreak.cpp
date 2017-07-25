@@ -2,34 +2,24 @@
 class Solution {
 public:
     bool wordBreak(string s, vector<string>& wordDict) {
-        vector<int> v(s.size()+1,0);
+        vector<int> v(s.size()+1,0);//表示i为上一个单词结尾的位置
         v[0] = 1;
-        for(int i = 1; i <= s.size(); i++)
+        for(int i = 1; i <= s.size(); i++)//以i为结尾
         {
-            for(int j = i-1; j >= 0; j--)
+            for(int j = i-1; j >= 0; j--)//以j为开头的子字符串
             {
-                if (v[j])
+                if (v[j])//如果j是上一个单词的结尾
                 {
-                    string sub = s.substr(j, i-j);
-                    cout << "sub:"<<sub << ",i:"<<i<<",j:"<<j<<endl;
-                    int hasfind = 0;
-                    for (int k = 0; k < wordDict.size(); k++)
+                    string sub = s.substr(j, i-j);//那么判断这个新的字符串
+                    if (find(wordDict.begin(), wordDict.end(), sub)!=wordDict.end())
                     {
-                        if (sub == wordDict[k])
-                        {
-                            hasfind = 1;
-                        }
-                    }
-                    if (hasfind)
-                    {
-                        //cout << "i:"<<i<<endl;
-                        v[i] = 1;
+                        v[i] = 1;//如果有那么就是一个结尾
+                        break;
                     }
                 }
 
             }
         }
-        displayVec(v);
         return v[s.size()];
     }
 };
