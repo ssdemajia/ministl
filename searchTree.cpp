@@ -14,7 +14,7 @@ struct elem{//输入的数据元素
 };
 
 template <typename KEY_TYPE, typename VALUE_TYPE>
-struct node{
+struct node{//树节点，保存了一个用于放置key和value的结点
     elem<KEY_TYPE, VALUE_TYPE> _e;
 
     node(elem<KEY_TYPE, VALUE_TYPE> e):left(NULL),right(NULL){
