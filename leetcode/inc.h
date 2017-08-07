@@ -31,4 +31,12 @@ void displayVec2d(std::vector<std::vector<T> > v,string sep = " ")
         cout << endl;
     }
 }
+template <typename K, typename V>
+void displayMap(std::unordered_map<K,V> m, string sep = " ")
+{
+    for (auto p:m) {
+        cout << p.first<<"->"<<p.second<<" ";
+    }
+    cout << "\n";
+}
 #endif
