@@ -11,6 +11,13 @@
 #include <unordered_set>
 //#include <stack>
 using namespace std;
+struct TreeNode {
+   int val;
+   TreeNode *left;
+   TreeNode *right;
+   TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+};
+
 template <typename T>
 void displayVec(std::vector<T> v, string sep = " ")
 {
