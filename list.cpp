@@ -2,30 +2,40 @@
 
 List::List(std::vector<int> source)
 {
-    //displayVec(source);
     ListNode * root = new ListNode(0);
     ListNode * p = root;
-    int i = 0;
-    for (;i<source.size();i++)
+    for (int i = 0;i<source.size();i++)
     {
         ListNode *temp = new ListNode(source[i]);
         p->next = temp;
         p = p->next;
     }
-    std::shared_ptr<ListNode> sp (root->next);
-    list = sp;
+    list = root->next;
     delete root;
 }
 ListNode* List::getHead() const
 {
-    return list.get();
+    return list;
 }
 void List::displayList() const
 {
-    ListNode * p= getHead();
-    cout << p->next->next->val << endl;
+    ListNode * p= list;
+    while (p) {
+        cout << p->val<<" ";
+        p = p->next;
+    }
 }
-void List::setHead(ListNode*& x)
+void List::setHead(ListNode* x)
 {
-    list.reset(x);
+    list = x;
+}
+List::~List()
+{
+    ListNode *p = list;
+    ListNode *temp;
+    while(p) {
+        temp = p->next;
+        delete p;
+        p = temp;
+    }
 }

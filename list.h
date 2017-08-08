@@ -13,11 +13,12 @@ class List
 {
 public:
     List(std::vector<int> source);
+    ~List();
     ListNode * getHead() const;
-    void setHead(ListNode* &x);
+    void setHead(ListNode* x);
     void displayList() const;
 private:
-    std::shared_ptr<ListNode> list;
+    ListNode* list;
 };
 
 #endif
