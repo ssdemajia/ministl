@@ -1,5 +1,6 @@
 #include "inc.h"
 #include <limits>
+//Leetcode 50
 class Solution {
 public:
     double myPow2(double x, int n) {//自己写的，x一共乘以n次，比较慢
