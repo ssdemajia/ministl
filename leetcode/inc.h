@@ -31,7 +31,7 @@ void displayVec2d(std::vector<std::vector<T> > v,string sep = " ")
 {
     for (int i = 0; i < v.size(); i++)
     {
-        for (int j = 0; j < v[0].size(); j++)
+        for (int j = 0; j < v[i].size(); j++)
         {
             cout << v[i][j] << sep;
         }
