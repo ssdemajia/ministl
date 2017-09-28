@@ -153,7 +153,7 @@ __default_alloc_template<threads, inst>::free_lists[__NFREELISTS] =
 {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
 
 template<bool threads, int inst>
-void * __default_alloc_template<threads, inst>::refill(size_t n) {
+void * __default_alloc_template<threads, inst>::refill(size_t n) {//重新填充free_lists
     int nobjs = 20;
     char * chunk = chunk_alloc(n, nobjs);
     obj* volatile * my_free_list;
@@ -177,7 +177,19 @@ void * __default_alloc_template<threads, inst>::refill(size_t n) {
         }
     }
     return result;
+}
+/*
+内存池, 从内存池中取空间给free List
+*/
+template <bool threads, int inst>
+char* __default_alloc_template<threads, inst>::chunk_alloc(size_t size, int &nobjs) {
+    char* result;
+    size_t total_bytes = size * nobjs;
+    size_t bytes_left = end_free - start_free;//内存池剩余的空间
 
+    if (bytes_left >= total_bytes) {//内存池剩余的空间可以满足需求
+        result = start_free;
+    }
 }
 
 
